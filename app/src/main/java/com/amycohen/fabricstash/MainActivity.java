@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.password) EditText mPassword;
     @BindView(R.id.loginInfo) LinearLayout logInOptions;
     @BindView(R.id.logOutInfo) LinearLayout logOutOptions;
+    @BindView(R.id.createAccountInfo) LinearLayout createAccountOptions;
+    @BindView(R.id.newEmail) EditText mNewEmail;
+    @BindView(R.id.newPassword) EditText mNewPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +51,12 @@ public class MainActivity extends AppCompatActivity {
     public void updateUI(FirebaseUser user) {
         if (user == null) {
             logOutOptions.setVisibility(View.GONE);
+            createAccountOptions.setVisibility(View.GONE);
             logInOptions.setVisibility(View.VISIBLE);
         } else {
             logOutOptions.setVisibility(View.VISIBLE);
             logInOptions.setVisibility(View.GONE);
+            createAccountOptions.setVisibility(View.GONE);
 
             String info = "";
             if (user.getUid() != null && user.getEmail() != null) {
@@ -64,10 +69,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //@OnClick(R.id.createAccount)
-//    public void createAccountActivity(){
-//
-//    }
+    @OnClick(R.id.newAccountButton)
+    public void goToCreateNewAccount(){
+        createAccountOptions.setVisibility(View.VISIBLE);
+        logOutOptions.setVisibility(View.GONE);
+        logInOptions.setVisibility(View.GONE);
+    }
+
+
+    @OnClick(R.id.createAccountButton)
+    public void createNewAccountActivity() {
+        String email = mNewEmail.getText().toString();
+        String password = mNewPassword.getText().toString();
+
+        createAccount(email, password);
+
+    }
 
     private void createAccount(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
@@ -81,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "createUserWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user);
+                    goToList();
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -114,8 +132,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "signInWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user);
-                    Intent intent = new Intent (MainActivity.this, ListActivity.class);
-                    startActivity(intent);
+                    goToList();
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -127,6 +144,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void goToList() {
+        Intent intent = new Intent (MainActivity.this, ListActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.logOut)
