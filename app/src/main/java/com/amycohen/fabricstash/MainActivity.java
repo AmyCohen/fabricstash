@@ -69,27 +69,12 @@ public class MainActivity extends AppCompatActivity {
         String password = mPassword.getText().toString();
 
         signIn(email, password);
-//        if (signIn(email, password)[0]) {
-//            Intent intent = new Intent (MainActivity.this, ListActivity.class);
-//            startActivity(intent);
-//        } else {
-//            Toast.makeText(MainActivity.this, "Password or email is incorrect. Please try again.",
-//                    Toast.LENGTH_SHORT).show();
-//        }
-
     }
 
     //SOURCE: https://github.com/firebase/quickstart-android/blob/master/auth/app/src/main/java/com/google/firebase/quickstart/auth/java/EmailPasswordActivity.java
     private void signIn(String email, String password) {
-
         Log.d(TAG, "signIn:" + email);
-//        if (!validateForm()) {
-//            return;
-//        }
 
-//        showProgressDialog();
-
-        // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -109,17 +94,9 @@ public class MainActivity extends AppCompatActivity {
                     updateUI(null);
                 }
 
-                // [START_EXCLUDE]
-//                if (!task.isSuccessful()) {
-//                    mStatusTextView.setText(R.string.auth_failed);
-//                }
-//                hideProgressDialog();
-                // [END_EXCLUDE]
             }
 
         });
-// [END sign_in_with_email]
-
     }
 
     @OnClick(R.id.logOut)
@@ -128,15 +105,4 @@ public class MainActivity extends AppCompatActivity {
         updateUI(null);
     }
 
-
-
-//    @OnClick(R.id.LogIn)
-//    public void logIn() {
-//        if (signInWithEmailAndPassword(email, password)) {
-//            Intent intent = new Intent(this, ListActivity.class);
-//            startActivity(intent);
-//        } else {
-//            Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 }
