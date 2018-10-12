@@ -22,10 +22,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
+
     private FirebaseAuth mAuth;
-    private String TAG;
-    @BindView(R.id.email) EditText email;
-    @BindView(R.id.password) EditText password;
+    private static final String TAG = "EmailPassword";
+    @BindView(R.id.email) EditText mEmail;
+    @BindView(R.id.password) EditText mPassword;
     @BindView(R.id.loginInfo) LinearLayout logInOptions;
     @BindView(R.id.logOut) Button logOutOptions;
 
@@ -39,16 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
-//    }
 
 
     public void updateUI(FirebaseUser user) {
@@ -65,36 +57,29 @@ public class MainActivity extends AppCompatActivity {
             } else if (user.getUid() != null) {
                 info = "anonymous " + user.getUid();
             }
-            email.setText(info);
+            mEmail.setText(info);
         }
     }
 
-//    private void createAccount() {
-//        mAuth.createUserWithEmailAndPassword(email,password)
-//            .addOnCompleteListener(this,new OnCompleteListener<AuthResult>() {
-//            @Override
-//            public void onComplete (@NonNull Task< AuthResult > task) {
-//                if (task.isSuccessful()) {
-//                    // Sign in success, update UI with the signed-in user's information
-//                    Log.d(TAG, "createUserWithEmail:success");
-//                    FirebaseUser user = mAuth.getCurrentUser();
-//                    updateUI(user);
-//                } else {
-//                    // If sign in fails, display a message to the user.
-//                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                    Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                            Toast.LENGTH_SHORT).show();
-//                    updateUI(null);
-//                }
-//
-//                // ...
-//            }
-//        });
-//    }
-    public void signInWithEmailAndPassword (EditText email, EditText password){
-//    public Task<AuthResult> signInWithEmailAndPassword (String email, String password){
-    mAuth.signInWithEmailAndPassword(String.valueOf(email), String.valueOf(password)
-    )
+    @OnClick(R.id.LogIn)
+    public void logInActivity () {
+        String email = mEmail.getText().toString();
+        String password = mPassword.getText().toString();
+
+        signIn(email, password);
+    }
+
+    //SOURCE: https://github.com/firebase/quickstart-android/blob/master/auth/app/src/main/java/com/google/firebase/quickstart/auth/java/EmailPasswordActivity.java
+    private void signIn(String email, String password) {
+        Log.d(TAG, "signIn:" + email);
+//        if (!validateForm()) {
+//            return;
+//        }
+
+//        showProgressDialog();
+
+        // [START sign_in_with_email]
+        mAuth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -106,20 +91,31 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.getException());
-//                    Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
                     updateUI(null);
                 }
 
-                // ...
+                // [START_EXCLUDE]
+//                if (!task.isSuccessful()) {
+//                    mStatusTextView.setText(R.string.auth_failed);
+//                }
+//                hideProgressDialog();
+                // [END_EXCLUDE]
             }
         });
+// [END sign_in_with_email]
     }
 
-    @OnClick(R.id.LogIn)
-    public void logIn() {
-        signInWithEmailAndPassword(email, password);
-        Intent intent = new Intent(this, ListActivity.class);
-        startActivity(intent);
-    }
+
+
+//    @OnClick(R.id.LogIn)
+//    public void logIn() {
+//        if (signInWithEmailAndPassword(email, password)) {
+//            Intent intent = new Intent(this, ListActivity.class);
+//            startActivity(intent);
+//        } else {
+//            Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 }
