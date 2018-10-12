@@ -17,17 +17,23 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Arrays;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
+
     private FirebaseAuth mAuth;
-    private String TAG;
-    @BindView(R.id.email) EditText email;
-    @BindView(R.id.password) EditText password;
+    private static final String TAG = "EmailPassword";
+    @BindView(R.id.email) EditText mEmail;
+    @BindView(R.id.password) EditText mPassword;
     @BindView(R.id.loginInfo) LinearLayout logInOptions;
-    @BindView(R.id.logOut) Button logOutOptions;
+    @BindView(R.id.logOutInfo) LinearLayout logOutOptions;
+    @BindView(R.id.createAccountInfo) LinearLayout createAccountOptions;
+    @BindView(R.id.newEmail) EditText mNewEmail;
+    @BindView(R.id.newPassword) EditText mNewPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,62 +45,85 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
-//    }
 
 
     public void updateUI(FirebaseUser user) {
         if (user == null) {
             logOutOptions.setVisibility(View.GONE);
+            createAccountOptions.setVisibility(View.GONE);
             logInOptions.setVisibility(View.VISIBLE);
         } else {
             logOutOptions.setVisibility(View.VISIBLE);
             logInOptions.setVisibility(View.GONE);
+            createAccountOptions.setVisibility(View.GONE);
 
             String info = "";
             if (user.getUid() != null && user.getEmail() != null) {
-                info = user.getEmail() + " " + user.getUid();
+                info = user.getEmail();
             } else if (user.getUid() != null) {
                 info = "anonymous " + user.getUid();
             }
-            email.setText(info);
+            mEmail.setText(info);
         }
     }
 
-//    private void createAccount() {
-//        mAuth.createUserWithEmailAndPassword(email,password)
-//            .addOnCompleteListener(this,new OnCompleteListener<AuthResult>() {
-//            @Override
-//            public void onComplete (@NonNull Task< AuthResult > task) {
-//                if (task.isSuccessful()) {
-//                    // Sign in success, update UI with the signed-in user's information
-//                    Log.d(TAG, "createUserWithEmail:success");
-//                    FirebaseUser user = mAuth.getCurrentUser();
-//                    updateUI(user);
-//                } else {
-//                    // If sign in fails, display a message to the user.
-//                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                    Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                            Toast.LENGTH_SHORT).show();
-//                    updateUI(null);
-//                }
-//
-//                // ...
-//            }
-//        });
-//    }
-    public void signInWithEmailAndPassword (EditText email, EditText password){
-//    public Task<AuthResult> signInWithEmailAndPassword (String email, String password){
-    mAuth.signInWithEmailAndPassword(String.valueOf(email), String.valueOf(password)
-    )
+
+    @OnClick(R.id.newAccountButton)
+    public void goToCreateNewAccount(){
+        createAccountOptions.setVisibility(View.VISIBLE);
+        logOutOptions.setVisibility(View.GONE);
+        logInOptions.setVisibility(View.GONE);
+    }
+
+
+    @OnClick(R.id.createAccountButton)
+    public void createNewAccountActivity() {
+        String email = mNewEmail.getText().toString();
+        String password = mNewPassword.getText().toString();
+
+        createAccount(email, password);
+
+    }
+
+    private void createAccount(String email, String password) {
+        Log.d(TAG, "createAccount:" + email);
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "createUserWithEmail:success");
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    updateUI(user);
+                    goToList();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                    Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                    updateUI(null);
+                }
+
+            }
+        });
+    }
+
+    @OnClick(R.id.LogIn)
+    public void logInActivity () {
+        String email = mEmail.getText().toString();
+        String password = mPassword.getText().toString();
+
+        signIn(email, password);
+    }
+
+    //SOURCE: https://github.com/firebase/quickstart-android/blob/master/auth/app/src/main/java/com/google/firebase/quickstart/auth/java/EmailPasswordActivity.java
+    private void signIn(String email, String password) {
+        Log.d(TAG, "signIn:" + email);
+
+        mAuth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -103,23 +132,29 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "signInWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user);
+                    goToList();
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.getException());
-//                    Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
                     updateUI(null);
                 }
 
-                // ...
             }
+
         });
     }
 
-    @OnClick(R.id.LogIn)
-    public void logIn() {
-        signInWithEmailAndPassword(email, password);
-        Intent intent = new Intent(this, ListActivity.class);
+    public void goToList() {
+        Intent intent = new Intent (MainActivity.this, ListActivity.class);
         startActivity(intent);
     }
+
+    @OnClick(R.id.logOut)
+    public void signOut() {
+        mAuth.signOut();
+        updateUI(null);
+    }
+
 }
