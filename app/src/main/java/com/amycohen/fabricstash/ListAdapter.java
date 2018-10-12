@@ -1,5 +1,6 @@
 package com.amycohen.fabricstash;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,23 +18,20 @@ import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {
 
-    public List<Fabric> fabricsList;
     private FragmentManager fragmentManager;
 
-    public ListAdapter(){}
+
+
+    List<Fabric> fabricsList;
+
     public ListAdapter (List<Fabric> fabricsList) {
         this.fabricsList = fabricsList;
     }
 
-    public ListAdapter(Fabric fabrics) {
+    @Override
+    public int getItemCount() {
+        return this.fabricsList.size();
     }
-
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_list_adapter);
-//    }
 
     @NonNull
     @Override
@@ -46,17 +44,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {
+        Fabric fabric = fabricsList.get(i);
+        //fill in the info that will be in the view
+//        holder.fabricType.setText(fabric.fabricType);
     }
 
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        
+        public Fabric mFabric;
         public View view;
 //        public TextView
 //        public TextView
@@ -67,13 +63,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         public MyViewHolder(View view) {
             super(view);
             this.view = view;
+
+//            this.name = view.findViewById(R.id.name);
             
             view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            
+//            Intent intent = new Intent(v.getContext(), FabricDetailActivity.class);
+//            mFabric.fillIntent(intent);
+//
+//            v.getContext().startActivity(intent);
         }
     }
     

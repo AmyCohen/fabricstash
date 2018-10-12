@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.amycohen.fabricstash.models.Fabric;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,6 +19,7 @@ import butterknife.ButterKnife;
 public class ListFragment extends Fragment {
     //implements ValueEventListener
     //implements TextWatcher
+    private List<Fabric> fabrics;
 
     @BindView(R.id.inventoryList) RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
@@ -29,8 +31,6 @@ public class ListFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_list_fragment, container, false);
 
         ButterKnife.bind(this, view);
-
-        Fabric fabrics = new Fabric();
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
         listAdapter = new ListAdapter(fabrics);
