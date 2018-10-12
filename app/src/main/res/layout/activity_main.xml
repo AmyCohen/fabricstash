@@ -8,13 +8,12 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/background"
+        android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
         android:src="@drawable/fabric_stash_logo"
-        app:layout_constraintBottom_toTopOf="@+id/loginInfo"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
@@ -23,7 +22,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/background"
+        app:layout_constraintTop_toBottomOf="@id/logo"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
@@ -57,15 +56,27 @@
             android:text="Log In" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/logOut"
+    <LinearLayout
+        android:id="@+id/logOutInfo"
         android:visibility="gone"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log Out"
-        app:layout_constraintTop_toBottomOf="@id/background"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        app:layout_constraintBottom_toBottomOf="parent">
 
+        <Button
+            android:id="@+id/logOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Log Out" />
+        <Button
+            android:id="@+id/goToList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Go To Your Fabric Stash"/>
+
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

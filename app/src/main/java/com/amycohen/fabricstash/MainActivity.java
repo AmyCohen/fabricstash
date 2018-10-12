@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.email) EditText mEmail;
     @BindView(R.id.password) EditText mPassword;
     @BindView(R.id.loginInfo) LinearLayout logInOptions;
-    @BindView(R.id.logOut) Button logOutOptions;
+    @BindView(R.id.logOutInfo) LinearLayout logOutOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +66,20 @@ public class MainActivity extends AppCompatActivity {
         String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
 
-        signIn(email, password);
+        if (signIn(email, password)[0]) {
+            Intent intent = new Intent (MainActivity.this, ListActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(MainActivity.this, "Password or email is incorrect. Please try again.",
+                    Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     //SOURCE: https://github.com/firebase/quickstart-android/blob/master/auth/app/src/main/java/com/google/firebase/quickstart/auth/java/EmailPasswordActivity.java
-    private void signIn(String email, String password) {
+    private boolean[] signIn(String email, String password) {
+
+        final boolean[] isAuthorized = {false};
         Log.d(TAG, "signIn:" + email);
 //        if (!validateForm()) {
 //            return;
@@ -88,12 +97,14 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "signInWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user);
+                    isAuthorized[0] = true;
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.getException());
                     Toast.makeText(MainActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
                     updateUI(null);
+                    isAuthorized[0] = false;
                 }
 
                 // [START_EXCLUDE]
@@ -105,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 // [END sign_in_with_email]
+
+        return isAuthorized;
     }
 
 
