@@ -32,6 +32,8 @@ public class ListFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+
+
         linearLayoutManager = new LinearLayoutManager(getActivity());
         listAdapter = new ListAdapter(fabrics);
         recyclerView.setAdapter(listAdapter);
