@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/sigleItemLimitedView"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10sp">
+
+        <ImageView
+            android:id="@+id/fabricPhoto"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10sp">
+
+            <TextView
+                android:id="@+id/fabricName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Name of Fabric"
+                android:paddingBottom="10sp"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fabricCompany"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="FABRIC COMPANY"
+                android:paddingBottom="10sp"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/fabricType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="type of fabric"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
