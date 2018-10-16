@@ -1,8 +1,8 @@
 package com.amycohen.fabricstash;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,25 +17,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListFragment extends Fragment implements ValueEventListener {
+public class FabricListFragment  extends Fragment implements ValueEventListener {
     //implements TextWatcher
     private final String TAG = "DATABASE";
     private List<Fabric> fabrics;
 
-    @BindView(R.id.inventoryList) RecyclerView recyclerView;
+    @BindView(R.id.inventoryList)
+    RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     ListAdapter listAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.activity_list_fragment, container, false);
+        View view = inflater.inflate(R.layout.activity_list, container, false);
 
         ButterKnife.bind(this, view);
 
