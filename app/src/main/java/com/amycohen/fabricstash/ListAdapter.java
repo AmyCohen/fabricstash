@@ -24,6 +24,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
     List<Fabric> fabricsList;
 
+
+    //Default Empty Constructor
+    public ListAdapter() {}
+
     public ListAdapter (List<Fabric> fabricsList) {
         this.fabricsList = fabricsList;
     }

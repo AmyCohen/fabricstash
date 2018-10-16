@@ -16,9 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListActivity" />
+        <activity android:name=".FabricListActivity" />
         <activity android:name=".SingleFragmentActivity" />
-        <activity android:name=".ListFragment" />
+        <activity android:name=".FabricListFragment" />
         <activity android:name=".ListAdapter"></activity>
     </application>
 
