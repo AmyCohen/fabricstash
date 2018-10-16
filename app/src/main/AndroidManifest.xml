@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".ListActivity" />
         <activity android:name=".SingleFragmentActivity" />
-        <activity android:name=".ListFragment"></activity>
+        <activity android:name=".ListFragment" />
+        <activity android:name=".ListAdapter"></activity>
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ public class Fabric {
     public String fiberContent;
     public float quantity;
     public String unit;
+    public String imageUrl;
 
     //What was purchased
     public boolean custom;
@@ -28,7 +29,7 @@ public class Fabric {
     public Fabric() {}
 
     //Constructor
-    public Fabric (String fabricName, String fabricType, String fiberContent, float quantity, String unit, boolean custom, String company, boolean bst, String bstPerson, boolean washed, String detergeant, float pricePaid, boolean usedOnProject, String projectName) {
+    public Fabric (String fabricName, String fabricType, String fiberContent, float quantity, String unit,  String imageUrl, boolean custom, String company, boolean bst, String bstPerson, boolean washed, String detergeant, float pricePaid, boolean usedOnProject, String projectName) {
 
         //Where was it purchased
         this.fabricName = fabricName;
@@ -36,6 +37,7 @@ public class Fabric {
         this.fiberContent = fiberContent;
         this.quantity = quantity;
         this.unit = unit;
+        this.imageUrl = imageUrl;
 
         //What was purchased
         this.custom = custom;
