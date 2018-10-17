@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,15 +25,14 @@ import butterknife.ButterKnife;
 
 public class FabricListFragment  extends Fragment implements ValueEventListener {
     //implements TextWatcher
-    private final String TAG = "DATABASE";
-    private List<Fabric> fabrics;
 
-    @BindView(R.id.inventoryList)
-    RecyclerView recyclerView;
+    @BindView(R.id.inventoryList) RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
-    ListAdapter listAdapter;
+    FabricListAdapter fabricListAdapter;
 
-    @Override
+    private final String TAG = "DATABASE";
+//    public List<Fabric> fabrics;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_list, container, false);
@@ -43,20 +43,58 @@ public class FabricListFragment  extends Fragment implements ValueEventListener 
         fabricInventoryList.addValueEventListener(this);
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
-        listAdapter = new ListAdapter(fabrics);
-        recyclerView.setAdapter(listAdapter);
+//        fabricListAdapter = new FabricListAdapter(fabrics);
+        fabricListAdapter = new FabricListAdapter();
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(fabricListAdapter);
 
 
         return view;
     }
 
     @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+    public void onDataChange(DataSnapshot dataSnapshot) {
         // This method is called once with the initial value and again
         // whenever data at this location is updated.
-        String value = dataSnapshot.getValue(String.class);
-        Log.d(TAG, "Value is: " + value);
+        List<Fabric> fabrics = new ArrayList<>();
+
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            fabrics.add(Fabric.fromSnapshot(snapshot));
+        }
+
+        fabricListAdapter.fabricsList = fabrics;
+        fabricListAdapter.notifyDataSetChanged();
     }
+
+//    public void initialDataLoad(DatabaseReference dataSnapshot) {
+//        // This method is called once with the initial value and again
+//        // whenever data at this location is updated.
+//        List<Fabric> fabrics = new ArrayList<>();
+//
+//        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//            fabrics.add(Fabric.fromSnapshot(snapshot));
+//        }
+//
+//        fabricListAdapter.fabricsList = fabrics;
+//        fabricListAdapter.notifyDataSetChanged();
+//    }
+
+    /*
+    EXAMPLE:
+
+
+        @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+        List<Errand> errands = new ArrayList<>();
+
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            errands.add(Errand.fromSnapshot(snapshot));
+        }
+        errandAdapter.errands = errands;
+        errandAdapter.notifyDataSetChanged();
+    }
+
+     */
 
     @Override
     public void onCancelled(@NonNull DatabaseError databaseError) {
