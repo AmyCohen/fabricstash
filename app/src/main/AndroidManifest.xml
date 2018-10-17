@@ -19,7 +19,7 @@
         <activity android:name=".FabricListActivity" />
         <activity android:name=".SingleFragmentActivity" />
         <activity android:name=".FabricListFragment" />
-        <activity android:name=".ListAdapter"></activity>
+        <activity android:name=".FabricListAdapter"></activity>
     </application>
 
 </manifest>
