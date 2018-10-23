@@ -55,7 +55,7 @@ public class FabricListAdapter extends RecyclerView.Adapter<FabricListAdapter.My
         TextView fabricName;
         TextView fabricCompany;
         TextView fabricType;
-//        ImageView fabricImage;
+        ImageView fabricImage;
         Fabric mFabric;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -63,7 +63,7 @@ public class FabricListAdapter extends RecyclerView.Adapter<FabricListAdapter.My
             this.mView = itemView;
             mView.setOnClickListener(this);
 
-//            fabricImage = itemView.findViewById(R.id.fabricPhoto);
+            fabricImage = itemView.findViewById(R.id.fabricPhoto);
             fabricName = itemView.findViewById(R.id.fabricName);
             fabricCompany = itemView.findViewById(R.id.fabricCompany);
             fabricType = itemView.findViewById(R.id.fabricType);
@@ -75,9 +75,9 @@ public class FabricListAdapter extends RecyclerView.Adapter<FabricListAdapter.My
             fabricCompany.setText(fabric.company);
             fabricType.setText(fabric.fabricType);
 
-//            Ion.with(fabricImage)
-//                    .error(R.drawable.placeholder)
-//                    .load(fabric.imageUrl);
+            Ion.with(fabricImage)
+                    .error(R.drawable.placeholder)
+                    .load(fabric.imageUrl);
         }
 
     //Add a click event to take you to a detail page
