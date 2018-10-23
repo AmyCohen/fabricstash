@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amycohen.fabricstash.models.Fabric;
+import com.koushikdutta.ion.Ion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +21,9 @@ import butterknife.BindView;
 public class FabricListAdapter extends RecyclerView.Adapter<FabricListAdapter.MyViewHolder> {
 
     public List<Fabric> fabricsList;
-//    private FragmentManager fragmentManager;
-
-    //Default Empty Constructor
-//    public FabricListAdapter() {}
 
     public FabricListAdapter() {
-//    public FabricListAdapter(List<Fabric> fabric) {
         fabricsList = new ArrayList<>();
-//        this.fabricsList = fabric;
         Log.d("COUNT", String.valueOf(fabricsList.size()));
     }
 
@@ -43,9 +39,6 @@ public class FabricListAdapter extends RecyclerView.Adapter<FabricListAdapter.My
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {
-//        Fabric fabric = fabricsList.get(i);
-        //fill in the info that will be in the view
-//        holder.fabricType.setText(fabric.fabricType);
         holder.bind(fabricsList.get(i));
 
     }
@@ -62,6 +55,7 @@ public class FabricListAdapter extends RecyclerView.Adapter<FabricListAdapter.My
         TextView fabricName;
         TextView fabricCompany;
         TextView fabricType;
+//        ImageView fabricImage;
         Fabric mFabric;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -69,6 +63,7 @@ public class FabricListAdapter extends RecyclerView.Adapter<FabricListAdapter.My
             this.mView = itemView;
             mView.setOnClickListener(this);
 
+//            fabricImage = itemView.findViewById(R.id.fabricPhoto);
             fabricName = itemView.findViewById(R.id.fabricName);
             fabricCompany = itemView.findViewById(R.id.fabricCompany);
             fabricType = itemView.findViewById(R.id.fabricType);
@@ -79,6 +74,10 @@ public class FabricListAdapter extends RecyclerView.Adapter<FabricListAdapter.My
             fabricName.setText(fabric.fabricName);
             fabricCompany.setText(fabric.company);
             fabricType.setText(fabric.fabricType);
+
+//            Ion.with(fabricImage)
+//                    .error(R.drawable.placeholder)
+//                    .load(fabric.imageUrl);
         }
 
     //Add a click event to take you to a detail page
