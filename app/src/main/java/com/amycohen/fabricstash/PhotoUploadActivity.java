@@ -55,7 +55,8 @@ public class PhotoUploadActivity extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        dispatchTakePictureIntent();
+//        dispatchTakePictureIntent();
+        setPictureFromFile();
     }
 
     //From https://gist.github.com/geluso/8ce147ccfe34671245f3574634d95225
