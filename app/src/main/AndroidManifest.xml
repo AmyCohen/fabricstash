@@ -20,6 +20,7 @@
         <activity android:name=".SingleFragmentActivity" />
         <activity android:name=".FabricListFragment" />
         <activity android:name=".FabricListAdapter"></activity>
+        <activity android:name=".PhotoUploadActivity"></activity>
     </application>
 
 </manifest>

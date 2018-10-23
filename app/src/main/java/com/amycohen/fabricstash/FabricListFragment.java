@@ -1,5 +1,6 @@
 package com.amycohen.fabricstash;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class FabricListFragment  extends Fragment implements ValueEventListener {
     //implements TextWatcher
@@ -74,5 +76,11 @@ public class FabricListFragment  extends Fragment implements ValueEventListener 
     public void onCancelled(@NonNull DatabaseError databaseError) {
         // Failed to read value
         Log.w(TAG, "Failed to read value.", databaseError.toException());
+    }
+
+    @OnClick(R.id.addToStash)
+    public void addToStash() {
+        Intent intent = new Intent(getActivity(), PhotoUploadActivity.class);
+        startActivity(intent);
     }
 }
