@@ -62,6 +62,7 @@ public class Fabric {
     public static Fabric fromSnapshot(DataSnapshot snapshot) {
         Fabric fabric = new Fabric();
         fabric.id = snapshot.getKey();
+        fabric.imageUrl = snapshot.child("imageUrl").getValue(String.class);
         fabric.fabricName = snapshot.child("fabricName").getValue(String.class);
         fabric.company = snapshot.child("fabricCompany").getValue(String.class);
         fabric.fabricType = snapshot.child("fabricType").getValue(String.class);
