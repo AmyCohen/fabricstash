@@ -38,7 +38,7 @@ import butterknife.OnClick;
 public class PhotoUploadActivity extends AppCompatActivity {
 
     @BindView(R.id.imagePreview) ImageView mImagePreview;
-    @BindView(R.id.descriptionInput) EditText mDescriptionInput;
+    @BindView(R.id.nameOfFabric) EditText mNameOfFabric;
 
 
     private static final int REQUEST_SAVE_PHOTO = 1;
@@ -136,7 +136,7 @@ public class PhotoUploadActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         String uid = user.getUid();
-        String description = mDescriptionInput.getText().toString();
+        String description = mNameOfFabric.getText().toString();
 
         Log.d("UPLOAD", uid + " " + description);
 

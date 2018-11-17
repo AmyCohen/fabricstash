@@ -13,11 +13,25 @@
         android:src="@drawable/placeholder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/descriptionInput"/>
+        app:layout_constraintBottom_toTopOf="@id/nameOfFabric"/>
 
     <EditText
-        android:id="@+id/descriptionInput"
+        android:id="@+id/nameOfFabric"
         android:hint="Name of Fabric"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/store"/>
+    <EditText
+        android:id="@+id/store"
+        android:hint="Fabric Store"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/fiberContent"/>
+    <EditText
+        android:id="@+id/fiberContent"
+        android:hint="Fiber Content"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
