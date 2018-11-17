@@ -28,17 +28,17 @@
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/fiberContent"/>
+        app:layout_constraintBottom_toTopOf="@id/fabricType"/>
     <EditText
-        android:id="@+id/fiberContent"
-        android:hint="Fiber Content"
+        android:id="@+id/fabricType"
+        android:hint="Fabric Type"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/upload"/>
     <Button
         android:id="@+id/upload"
-        android:text="publish photo"
+        android:text="Save New Item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"/>

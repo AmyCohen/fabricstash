@@ -39,6 +39,8 @@ public class PhotoUploadActivity extends AppCompatActivity {
 
     @BindView(R.id.imagePreview) ImageView mImagePreview;
     @BindView(R.id.nameOfFabric) EditText mNameOfFabric;
+    @BindView(R.id.store) EditText mFabricCompany;
+    @BindView(R.id.fabricType) EditText mFabricType;
 
 
     private static final int REQUEST_SAVE_PHOTO = 1;
@@ -136,17 +138,21 @@ public class PhotoUploadActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         String uid = user.getUid();
-        String description = mNameOfFabric.getText().toString();
+        String nameOfFabric = mNameOfFabric.getText().toString();
+        String fabricCompany = mFabricCompany.getText().toString();
+        String fabricType = mFabricType.getText().toString();
 
-        Log.d("UPLOAD", uid + " " + description);
+        Log.d("UPLOAD", uid + " " + nameOfFabric);
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("fabricInventory");
 
         DatabaseReference newPhoto = myRef.push();
-//        newPhoto.child("uid").setValue(uid);
-        newPhoto.child("description").setValue(description);
+        newPhoto.child("uid").setValue(uid);
+        newPhoto.child("fabricName").setValue(nameOfFabric);
+        newPhoto.child("fabricCompany").setValue(fabricCompany);
+        newPhoto.child("fabricType").setValue(fabricType);
         newPhoto.child("imageUrl").setValue(storageUrl.toString());
 
         populateFeed();
