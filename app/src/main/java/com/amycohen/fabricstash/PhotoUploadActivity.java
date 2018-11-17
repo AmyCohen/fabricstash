@@ -110,17 +110,20 @@ public class PhotoUploadActivity extends AppCompatActivity {
 
                 // Get a URL to the uploaded content
 //                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+//                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
 
                 Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
                 task.addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         String photoLink = uri.toString();
+                        PhotoUploadActivity.this.saveImageUrlToDatabase(photoLink);
                     }
                 });
                 //broken command since I still have to write the new info to replace the getDownloadUrl method.
 //                PhotoUploadActivity.this.saveImageUrlToDatabase(downloadUrl);
-                PhotoUploadActivity.this.saveImageUrlToDatabase(task);
+//                PhotoUploadActivity.this.saveImageUrlToDatabase(task);
             }
         })
 
@@ -134,7 +137,7 @@ public class PhotoUploadActivity extends AppCompatActivity {
 
     }
     //changed the parameter to Task<Uri> instead of Uri
-    private void saveImageUrlToDatabase(Task<Uri> storageUrl) {
+    private void saveImageUrlToDatabase(String storageUrl) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         String uid = user.getUid();
@@ -153,7 +156,7 @@ public class PhotoUploadActivity extends AppCompatActivity {
         newPhoto.child("fabricName").setValue(nameOfFabric);
         newPhoto.child("fabricCompany").setValue(fabricCompany);
         newPhoto.child("fabricType").setValue(fabricType);
-        newPhoto.child("imageUrl").setValue(storageUrl.toString());
+        newPhoto.child("imageUrl").setValue(storageUrl);
 
         populateFeed();
 
