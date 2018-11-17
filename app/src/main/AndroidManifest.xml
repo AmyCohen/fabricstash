@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.amycohen.fabricstash">
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -27,6 +22,7 @@
         <activity android:name=".FabricListFragment" />
         <activity android:name=".FabricListAdapter" />
         <activity android:name=".PhotoUploadActivity" />
+        <activity android:name=".CreateNewItemActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -38,7 +34,11 @@
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
 
-        <activity android:name=".CreateNewItemActivity"></activity>
     </application>
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

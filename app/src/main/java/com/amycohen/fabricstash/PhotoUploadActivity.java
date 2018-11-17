@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +38,9 @@ import butterknife.OnClick;
 public class PhotoUploadActivity extends AppCompatActivity {
 
     @BindView(R.id.imagePreview) ImageView mImagePreview;
-    @BindView(R.id.descriptionInput) EditText mDescriptionInput;
+    @BindView(R.id.nameOfFabric) EditText mNameOfFabric;
+    @BindView(R.id.store) EditText mFabricCompany;
+    @BindView(R.id.fabricType) EditText mFabricType;
 
 
     private static final int REQUEST_SAVE_PHOTO = 1;
@@ -107,8 +110,17 @@ public class PhotoUploadActivity extends AppCompatActivity {
 
                 // Get a URL to the uploaded content
 //                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                task.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        String photoLink = uri.toString();
+                    }
+                });
                 //broken command since I still have to write the new info to replace the getDownloadUrl method.
 //                PhotoUploadActivity.this.saveImageUrlToDatabase(downloadUrl);
+                PhotoUploadActivity.this.saveImageUrlToDatabase(task);
             }
         })
 
@@ -121,22 +133,26 @@ public class PhotoUploadActivity extends AppCompatActivity {
         });
 
     }
-
-    private void saveImageUrlToDatabase(Uri storageUrl) {
+    //changed the parameter to Task<Uri> instead of Uri
+    private void saveImageUrlToDatabase(Task<Uri> storageUrl) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         String uid = user.getUid();
-        String description = mDescriptionInput.getText().toString();
+        String nameOfFabric = mNameOfFabric.getText().toString();
+        String fabricCompany = mFabricCompany.getText().toString();
+        String fabricType = mFabricType.getText().toString();
 
-        Log.d("UPLOAD", uid + " " + description);
+        Log.d("UPLOAD", uid + " " + nameOfFabric);
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("fabricInventory");
 
         DatabaseReference newPhoto = myRef.push();
-//        newPhoto.child("uid").setValue(uid);
-        newPhoto.child("description").setValue(description);
+        newPhoto.child("uid").setValue(uid);
+        newPhoto.child("fabricName").setValue(nameOfFabric);
+        newPhoto.child("fabricCompany").setValue(fabricCompany);
+        newPhoto.child("fabricType").setValue(fabricType);
         newPhoto.child("imageUrl").setValue(storageUrl.toString());
 
         populateFeed();
@@ -154,6 +170,9 @@ public class PhotoUploadActivity extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
+
+        //https://stackoverflow.com/questions/40498380/java-lang-illegalargumentexception-failed-to-find-configured-root-that-contains/42410808
+        //also changed the XML file per the above link
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName, /* prefix */
