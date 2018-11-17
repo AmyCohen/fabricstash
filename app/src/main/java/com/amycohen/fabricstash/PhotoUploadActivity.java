@@ -55,9 +55,10 @@ public class PhotoUploadActivity extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-//        dispatchTakePictureIntent();
-        setPictureFromFile();
+        dispatchTakePictureIntent();
+//        setPictureFromFile();
     }
+
 
     //From https://gist.github.com/geluso/8ce147ccfe34671245f3574634d95225
     public void dispatchTakePictureIntent() {
@@ -100,11 +101,14 @@ public class PhotoUploadActivity extends AppCompatActivity {
         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                //getDownloadUrl() no longer viable. See below for resource:
+                //https://github.com/udacity/and-nd-firebase/issues/46
+
                 // Get a URL to the uploaded content
 //                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-
-                PhotoUploadActivity.this.saveImageUrlToDatabase(downloadUrl);
+                //broken command since I still have to write the new info to replace the getDownloadUrl method.
+//                PhotoUploadActivity.this.saveImageUrlToDatabase(downloadUrl);
             }
         })
 

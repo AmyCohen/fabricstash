@@ -80,7 +80,7 @@ public class FabricListFragment  extends Fragment implements ValueEventListener 
 
     @OnClick(R.id.addToStash)
     public void addToStash() {
-        Intent intent = new Intent(getActivity(), PhotoUploadActivity.class);
+        Intent intent = new Intent(getActivity(), CreateNewItemActivity.class);
         startActivity(intent);
     }
 }
