@@ -1,11 +1,14 @@
 package com.amycohen.fabricstash.models;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 
 public class Fabric {
 
     //Where was it purchased
     public String id;
+    public String uid;
     public String fabricName;
     public String fabricType;
     public String fiberContent;
@@ -32,10 +35,11 @@ public class Fabric {
     public Fabric() {}
 
     //Constructor
-    public Fabric (String id, String fabricName, String fabricType, String fiberContent, float quantity, String unit,  String imageUrl, boolean custom, String company, boolean bst, String bstPerson, boolean washed, String detergeant, float pricePaid, boolean usedOnProject, String projectName) {
+    public Fabric (String id, String uid, String fabricName, String fabricType, String fiberContent, float quantity, String unit,  String imageUrl, boolean custom, String company, boolean bst, String bstPerson, boolean washed, String detergeant, float pricePaid, boolean usedOnProject, String projectName) {
 
         //Where was it purchased
         this.id = id;
+        this.uid = uid;
         this.fabricName = fabricName;
         this.fabricType = fabricType;
         this.fiberContent = fiberContent;
@@ -60,13 +64,22 @@ public class Fabric {
     }
 
     public static Fabric fromSnapshot(DataSnapshot snapshot) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        String uid = user.getUid();
+
         Fabric fabric = new Fabric();
         fabric.id = snapshot.getKey();
-        fabric.imageUrl = snapshot.child("imageUrl").getValue(String.class);
-        fabric.fabricName = snapshot.child("fabricName").getValue(String.class);
-        fabric.company = snapshot.child("fabricCompany").getValue(String.class);
-        fabric.fabricType = snapshot.child("fabricType").getValue(String.class);
 
+        fabric.uid = snapshot.child("uid").getValue(String.class);
+
+        if (uid.equals(fabric.uid)) {
+
+            fabric.imageUrl = snapshot.child("imageUrl").getValue(String.class);
+            fabric.fabricName = snapshot.child("fabricName").getValue(String.class);
+            fabric.company = snapshot.child("fabricCompany").getValue(String.class);
+            fabric.fabricType = snapshot.child("fabricType").getValue(String.class);
+        }
         return fabric;
     }
 

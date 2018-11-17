@@ -118,6 +118,8 @@ public class PhotoUploadActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         String photoLink = uri.toString();
+                        //https://stackoverflow.com/questions/50585334/tasksnapshot-getdownloadurl-method-not-working
+                        //Had to move this call up here and change the parameter type of the saveImageUrlToDatabase to String
                         PhotoUploadActivity.this.saveImageUrlToDatabase(photoLink);
                     }
                 });
