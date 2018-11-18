@@ -61,7 +61,6 @@ public class PhotoUploadActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         dispatchTakePictureIntent();
-//        setPictureFromFile();
     }
 
 
@@ -111,10 +110,6 @@ public class PhotoUploadActivity extends AppCompatActivity {
                 //https://github.com/udacity/and-nd-firebase/issues/46
 
                 // Get a URL to the uploaded content
-//                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-//                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-
                 Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
                 task.addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -125,9 +120,6 @@ public class PhotoUploadActivity extends AppCompatActivity {
                         PhotoUploadActivity.this.saveImageUrlToDatabase(photoLink);
                     }
                 });
-                //broken command since I still have to write the new info to replace the getDownloadUrl method.
-//                PhotoUploadActivity.this.saveImageUrlToDatabase(downloadUrl);
-//                PhotoUploadActivity.this.saveImageUrlToDatabase(task);
             }
         })
 
@@ -142,9 +134,11 @@ public class PhotoUploadActivity extends AppCompatActivity {
     }
     //changed the parameter to Task<Uri> instead of Uri
     private void saveImageUrlToDatabase(String storageUrl) {
+        //access the user based on who is signed in
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         String uid = user.getUid();
+
+        //get the information submitted via the form
         String nameOfFabric = mNameOfFabric.getText().toString();
         String fabricCompany = mFabricCompany.getText().toString();
         String fabricType = mFabricType.getText().toString();
@@ -154,33 +148,21 @@ public class PhotoUploadActivity extends AppCompatActivity {
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("fabricInventory");
-        String myKey = myRef.getKey().toString();
-
-//        if (myRef.getKey().equals(myRef.child(uid))){
-//
-//        myRef = database.getReference("fabricInventory").child(uid);
-//        DatabaseReference newPhoto = myRef.push();
-//
-////        myRef.child(uid).setValue(newPhoto);
-//        newPhoto.child("uid").setValue(uid);
-//        newPhoto.child("fabricName").setValue(nameOfFabric);
-//        newPhoto.child("fabricCompany").setValue(fabricCompany);
-//        newPhoto.child("fabricType").setValue(fabricType);
-//        newPhoto.child("imageUrl").setValue(storageUrl);
-//        } else {
-//
 
         //SOURCE: how I figured out to add the reference to a specific user
         //http://www.tothenew.com/blog/custom-ids-in-firebase/
-            DatabaseReference newPhoto = myRef.child(uid).push();
-            newPhoto.child("uid").setValue(uid);
-            newPhoto.child("fabricName").setValue(nameOfFabric);
-            newPhoto.child("fabricCompany").setValue(fabricCompany);
-            newPhoto.child("fabricType").setValue(fabricType);
-            newPhoto.child("imageUrl").setValue(storageUrl);
+        //Get a reference to the fabricInventory's child and push the information
+            //to the child. the child is based on the current user found at the beginning
+            //of the method.
+        DatabaseReference newPhoto = myRef.child(uid).push();
+        newPhoto.child("uid").setValue(uid);
+        newPhoto.child("fabricName").setValue(nameOfFabric);
+        newPhoto.child("fabricCompany").setValue(fabricCompany);
+        newPhoto.child("fabricType").setValue(fabricType);
+        newPhoto.child("imageUrl").setValue(storageUrl);
 
+        //All information has been pushed to the database so return the new intent
         populateFeed();
-
     }
 
     @Override
@@ -214,14 +196,6 @@ public class PhotoUploadActivity extends AppCompatActivity {
         int targetW = mImagePreview.getWidth();
         int targetH = mImagePreview.getHeight();
 
-//        if (targetW == 0 && targetH == 0) {
-////            targetW = 400;
-//            targetW = mBitmap.getWidth();
-//            targetH = mBitmap.getHeight();
-////            View.MeasureSpec.getSize();
-////            targetH = 400;
-//        }
-
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
@@ -230,6 +204,7 @@ public class PhotoUploadActivity extends AppCompatActivity {
         int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
+        // Avoid "divide by zero" errors by using the DisplayMetrics of the device being used
         int scaleFactor = 0;
         if (targetW == 0 && targetH == 0) {
         //SOURCE: https://stackoverflow.com/questions/11252067/how-do-i-get-the-screensize-programmatically-in-android
