@@ -10,7 +10,9 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -152,13 +154,30 @@ public class PhotoUploadActivity extends AppCompatActivity {
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("fabricInventory");
+        String myKey = myRef.getKey().toString();
 
-        DatabaseReference newPhoto = myRef.push();
-        newPhoto.child("uid").setValue(uid);
-        newPhoto.child("fabricName").setValue(nameOfFabric);
-        newPhoto.child("fabricCompany").setValue(fabricCompany);
-        newPhoto.child("fabricType").setValue(fabricType);
-        newPhoto.child("imageUrl").setValue(storageUrl);
+//        if (myRef.getKey().equals(myRef.child(uid))){
+//
+//        myRef = database.getReference("fabricInventory").child(uid);
+//        DatabaseReference newPhoto = myRef.push();
+//
+////        myRef.child(uid).setValue(newPhoto);
+//        newPhoto.child("uid").setValue(uid);
+//        newPhoto.child("fabricName").setValue(nameOfFabric);
+//        newPhoto.child("fabricCompany").setValue(fabricCompany);
+//        newPhoto.child("fabricType").setValue(fabricType);
+//        newPhoto.child("imageUrl").setValue(storageUrl);
+//        } else {
+//
+
+        //SOURCE: how I figured out to add the reference to a specific user
+        //http://www.tothenew.com/blog/custom-ids-in-firebase/
+            DatabaseReference newPhoto = myRef.child(uid).push();
+            newPhoto.child("uid").setValue(uid);
+            newPhoto.child("fabricName").setValue(nameOfFabric);
+            newPhoto.child("fabricCompany").setValue(fabricCompany);
+            newPhoto.child("fabricType").setValue(fabricType);
+            newPhoto.child("imageUrl").setValue(storageUrl);
 
         populateFeed();
 
@@ -195,15 +214,33 @@ public class PhotoUploadActivity extends AppCompatActivity {
         int targetW = mImagePreview.getWidth();
         int targetH = mImagePreview.getHeight();
 
+//        if (targetW == 0 && targetH == 0) {
+////            targetW = 400;
+//            targetW = mBitmap.getWidth();
+//            targetH = mBitmap.getHeight();
+////            View.MeasureSpec.getSize();
+////            targetH = 400;
+//        }
+
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth/2;
-        int photoH = bmOptions.outHeight/2;
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        int scaleFactor = 0;
+        if (targetW == 0 && targetH == 0) {
+        //SOURCE: https://stackoverflow.com/questions/11252067/how-do-i-get-the-screensize-programmatically-in-android
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int ht = displaymetrics.heightPixels;
+            int wt = displaymetrics.widthPixels;
+            scaleFactor = Math.min(photoH/ht, photoW/wt);
+        } else {
+            scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+        }
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;

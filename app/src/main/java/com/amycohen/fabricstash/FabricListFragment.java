@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.amycohen.fabricstash.models.Fabric;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,8 +44,12 @@ public class FabricListFragment  extends Fragment implements ValueEventListener 
         View view = inflater.inflate(R.layout.activity_list, container, false);
 
         ButterKnife.bind(this, view);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        DatabaseReference fabricInventoryList = FirebaseDatabase.getInstance().getReference("fabricInventory");
+        String uid = user.getUid();
+        DatabaseReference fabricInventoryList = FirebaseDatabase.getInstance().getReference("fabricInventory").child(uid);
+
+//        DatabaseReference fabricInventoryList = FirebaseDatabase.getInstance().getReference("fabricInventory");
         fabricInventoryList.addValueEventListener(this);
 
 //        mStorageRef = FirebaseStorage.getInstance().getReference("fabricPhotos");

@@ -64,22 +64,17 @@ public class Fabric {
     }
 
     public static Fabric fromSnapshot(DataSnapshot snapshot) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        String uid = user.getUid();
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//
+//        String uid = user.getUid();
 
         Fabric fabric = new Fabric();
         fabric.id = snapshot.getKey();
-
         fabric.uid = snapshot.child("uid").getValue(String.class);
-
-        if (uid.equals(fabric.uid)) {
-
-            fabric.imageUrl = snapshot.child("imageUrl").getValue(String.class);
-            fabric.fabricName = snapshot.child("fabricName").getValue(String.class);
-            fabric.company = snapshot.child("fabricCompany").getValue(String.class);
-            fabric.fabricType = snapshot.child("fabricType").getValue(String.class);
-        }
+        fabric.imageUrl = snapshot.child("imageUrl").getValue(String.class);
+        fabric.fabricName = snapshot.child("fabricName").getValue(String.class);
+        fabric.company = snapshot.child("fabricCompany").getValue(String.class);
+        fabric.fabricType = snapshot.child("fabricType").getValue(String.class);
         return fabric;
     }
 
