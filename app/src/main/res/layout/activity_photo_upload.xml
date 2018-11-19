@@ -5,83 +5,156 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
-    tools:context=".PhotoUploadActivity">
+    tools:context=".ItemUploadActivity">
 
 
-    <!--<ScrollView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@color/mainBackground">-->
-
-
-    <ImageView
-        android:id="@+id/imagePreview"
-        android:layout_width="300sp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        android:adjustViewBounds="true"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
-        android:src="@drawable/placeholder"
-        app:layout_constraintBottom_toTopOf="@id/nameOfFabric"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/nameOfFabric"
+    <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3sp"
-        android:background="@color/colorWhite"
-        android:hint="Name of Fabric"
-        android:inputType="text"
-        android:paddingBottom="8sp"
-        android:paddingLeft="10sp"
-        android:paddingRight="10sp"
-        android:paddingTop="8sp"
-        app:layout_constraintBottom_toTopOf="@id/store" />
-    <EditText
-        android:id="@+id/store"
-        android:hint="Fabric Store"
-        android:inputType="text"
-        android:paddingLeft="10sp"
-        android:paddingRight="10sp"
-        android:paddingTop="8sp"
-        android:paddingBottom="8sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
-        android:layout_marginBottom="3sp"
-        app:layout_constraintBottom_toTopOf="@id/fabricType"/>
-
-    <EditText
-        android:id="@+id/fabricType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Fabric Type (cotton lycra, dbp, etc.)"
-        android:inputType="text"
-        android:background="@color/colorWhite"
-        android:paddingLeft="10sp"
-        android:paddingRight="10sp"
-        android:paddingTop="8sp"
-        android:paddingBottom="8sp"
-        android:layout_marginBottom="3sp"
-        app:layout_constraintBottom_toTopOf="@id/addInfo"/>
-
-    <Button
-        android:id="@+id/addInfo"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
         android:background="@color/mainBackground"
-        android:text="Add additional fabric information."
-        android:textColor="@color/colorWhite"
-        android:textSize="10sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/upload" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/upload">
+
+        <!--ScrollView can only have one direct child so all of it has to be wraped in a layout-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--Layout visible at all times on the page only handling the image preview for centering purposes-->
+            <LinearLayout
+                android:id="@+id/imagePreviewArea"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/imagePreview"
+                    android:layout_weight="3"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_margin="10sp"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/placeholder" />
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <!--end of placeholder image preview-->
+
+            <!--beginning of fabric information standard only-->
+            <LinearLayout
+                android:id="@+id/standardInfo"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/nameOfFabric"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3sp"
+                    android:background="@color/colorWhite"
+                    android:hint="Name of Fabric"
+                    android:inputType="text"
+                    android:paddingBottom="8sp"
+                    android:paddingLeft="10sp"
+                    android:paddingRight="10sp"
+                    android:paddingTop="8sp" />
+                <EditText
+                    android:id="@+id/store"
+                    android:hint="Fabric Store"
+                    android:inputType="text"
+                    android:paddingLeft="10sp"
+                    android:paddingRight="10sp"
+                    android:paddingTop="8sp"
+                    android:paddingBottom="8sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:layout_marginBottom="3sp"
+                    app:layout_constraintBottom_toTopOf="@id/fabricType"/>
+                <EditText
+                    android:id="@+id/fabricType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Fabric Type (cotton lycra, dbp, etc.)"
+                    android:inputType="text"
+                    android:background="@color/colorWhite"
+                    android:paddingLeft="10sp"
+                    android:paddingRight="10sp"
+                    android:paddingTop="8sp"
+                    android:paddingBottom="8sp"
+                    android:layout_marginBottom="3sp"/>
+                <Button
+                    android:id="@+id/addInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="15sp"
+                    android:background="@color/mainBackground"
+                    android:text="Add additional fabric information."
+                    android:textColor="@color/colorWhite"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <!--end of standard information-->
+
+            <LinearLayout
+                android:id="@+id/additionalInfo"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/fiberContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Fiber Content (i.e. 96% polyester, 4% spandex)"
+                    android:inputType="text"
+                    android:background="@color/colorWhite"
+                    android:paddingLeft="10sp"
+                    android:paddingRight="10sp"
+                    android:paddingTop="8sp"
+                    android:paddingBottom="8sp"
+                    android:layout_marginBottom="3sp"/>
+
+                <!--handles cost layout-->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/pricePaid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Cost"
+                        android:inputType="numberDecimal"
+                        android:background="@color/colorWhite"
+                        android:paddingLeft="10sp"
+                        android:paddingRight="10sp"
+                        android:paddingTop="8sp"
+                        android:paddingBottom="8sp"
+                        android:layout_marginBottom="3sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="per"/>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
     <Button
         android:id="@+id/upload"
         android:text="Save New Item"
@@ -89,6 +162,5 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <!--</ScrollView>-->
 
 </android.support.constraint.ConstraintLayout>

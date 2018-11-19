@@ -20,7 +20,7 @@ public class CreateNewItemActivity extends AppCompatActivity {
 
     @OnClick(R.id.takePicture)
     public void takePicture(){
-        Intent intent = new Intent(this, PhotoUploadActivity.class);
+        Intent intent = new Intent(this, ItemUploadActivity.class);
         startActivity(intent);
     }
 
