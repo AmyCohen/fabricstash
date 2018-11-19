@@ -5,20 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CreateNewItemActivity">
+<!--<LinearLayout-->
+    <!--android:id="@+id/addNewItem"-->
+    <!--android:orientation="vertical"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
 
     <ImageView
+        android:id="@+id/placeholder"
         android:layout_width="match_parent"
         android:adjustViewBounds="true"
         android:src="@drawable/placeholder"
         android:scaleType="centerInside"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hint: Pictures will be stored and viewed as 1:1 squares"
+        android:textAlignment="textStart"
+        android:paddingLeft="10sp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/placeholder"
+        app:layout_constraintBottom_toTopOf="@id/takePicture"/>
 
     <Button
         android:id="@+id/takePicture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="New Fabric Photo"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
+        app:layout_constraintBottom_toBottomOf="parent" />
+<!--</LinearLayout>-->
 
 </android.support.constraint.ConstraintLayout>
