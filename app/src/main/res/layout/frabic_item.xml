@@ -16,7 +16,8 @@
             android:layout_width="100sp"
             android:layout_height="100sp"
             android:adjustViewBounds="true"
-            android:scaleType="centerInside" />
+            android:cropToPadding="false"
+            android:scaleType="fitXY" />
 
         <LinearLayout
             android:orientation="vertical"

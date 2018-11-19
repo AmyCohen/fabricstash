@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-//        createUidRefInDatabase();
     }
 
 
@@ -155,25 +154,6 @@ public class MainActivity extends AppCompatActivity {
     public void signOut() {
         mAuth.signOut();
         updateUI(null);
-    }
-
-    private DatabaseReference createUidRefInDatabase() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("fabricInventory");
-
-        if (myRef.child(uid).equals(uid)) {
-            myRef = database.getReference("fabricInventory").child(uid);
-            return myRef;
-
-        } else {
-            DatabaseReference addNewUser = myRef.push();
-            addNewUser.child("user").setValue(uid);
-            return addNewUser;
-        }
-
     }
 
 
