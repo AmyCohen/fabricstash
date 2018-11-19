@@ -10,7 +10,9 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -59,7 +61,6 @@ public class PhotoUploadActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         dispatchTakePictureIntent();
-//        setPictureFromFile();
     }
 
 
@@ -109,18 +110,16 @@ public class PhotoUploadActivity extends AppCompatActivity {
                 //https://github.com/udacity/and-nd-firebase/issues/46
 
                 // Get a URL to the uploaded content
-//                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-
                 Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
                 task.addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         String photoLink = uri.toString();
+                        //https://stackoverflow.com/questions/50585334/tasksnapshot-getdownloadurl-method-not-working
+                        //Had to move this call up here and change the parameter type of the saveImageUrlToDatabase to String
+                        PhotoUploadActivity.this.saveImageUrlToDatabase(photoLink);
                     }
                 });
-                //broken command since I still have to write the new info to replace the getDownloadUrl method.
-//                PhotoUploadActivity.this.saveImageUrlToDatabase(downloadUrl);
-                PhotoUploadActivity.this.saveImageUrlToDatabase(task);
             }
         })
 
@@ -134,10 +133,12 @@ public class PhotoUploadActivity extends AppCompatActivity {
 
     }
     //changed the parameter to Task<Uri> instead of Uri
-    private void saveImageUrlToDatabase(Task<Uri> storageUrl) {
+    private void saveImageUrlToDatabase(String storageUrl) {
+        //access the user based on who is signed in
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         String uid = user.getUid();
+
+        //get the information submitted via the form
         String nameOfFabric = mNameOfFabric.getText().toString();
         String fabricCompany = mFabricCompany.getText().toString();
         String fabricType = mFabricType.getText().toString();
@@ -148,15 +149,20 @@ public class PhotoUploadActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("fabricInventory");
 
-        DatabaseReference newPhoto = myRef.push();
+        //SOURCE: how I figured out to add the reference to a specific user
+        //http://www.tothenew.com/blog/custom-ids-in-firebase/
+        //Get a reference to the fabricInventory's child and push the information
+            //to the child. the child is based on the current user found at the beginning
+            //of the method.
+        DatabaseReference newPhoto = myRef.child(uid).push();
         newPhoto.child("uid").setValue(uid);
         newPhoto.child("fabricName").setValue(nameOfFabric);
         newPhoto.child("fabricCompany").setValue(fabricCompany);
         newPhoto.child("fabricType").setValue(fabricType);
-        newPhoto.child("imageUrl").setValue(storageUrl.toString());
+        newPhoto.child("imageUrl").setValue(storageUrl);
 
+        //All information has been pushed to the database so return the new intent
         populateFeed();
-
     }
 
     @Override
@@ -194,11 +200,22 @@ public class PhotoUploadActivity extends AppCompatActivity {
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth/2;
-        int photoH = bmOptions.outHeight/2;
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        // Avoid "divide by zero" errors by using the DisplayMetrics of the device being used
+        int scaleFactor = 0;
+        if (targetW == 0 && targetH == 0) {
+        //SOURCE: https://stackoverflow.com/questions/11252067/how-do-i-get-the-screensize-programmatically-in-android
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int ht = displaymetrics.heightPixels;
+            int wt = displaymetrics.widthPixels;
+            scaleFactor = Math.min(photoH/ht, photoW/wt);
+        } else {
+            scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+        }
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
