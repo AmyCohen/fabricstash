@@ -4,43 +4,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainBackground"
     tools:context=".PhotoUploadActivity">
+
+
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/mainBackground">-->
+
 
     <ImageView
         android:id="@+id/imagePreview"
-        android:adjustViewBounds="true"
-        android:scaleType="centerInside"
-        android:src="@drawable/placeholder"
-        android:layout_width="match_parent"
+        android:layout_width="300sp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/nameOfFabric"/>
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/placeholder"
+        app:layout_constraintBottom_toTopOf="@id/nameOfFabric"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/nameOfFabric"
-        android:hint="Name of Fabric"
-        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/store"/>
+        android:layout_marginBottom="3sp"
+        android:background="@color/colorWhite"
+        android:hint="Name of Fabric"
+        android:inputType="text"
+        android:paddingBottom="8sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="8sp"
+        app:layout_constraintBottom_toTopOf="@id/store" />
     <EditText
         android:id="@+id/store"
         android:hint="Fabric Store"
         android:inputType="text"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="8sp"
+        android:paddingBottom="8sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:layout_marginBottom="3sp"
         app:layout_constraintBottom_toTopOf="@id/fabricType"/>
+
     <EditText
         android:id="@+id/fabricType"
-        android:hint="Fabric Type"
-        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/upload"/>
+        android:hint="Fabric Type (cotton lycra, dbp, etc.)"
+        android:inputType="text"
+        android:background="@color/colorWhite"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="8sp"
+        android:paddingBottom="8sp"
+        android:layout_marginBottom="3sp"
+        app:layout_constraintBottom_toTopOf="@id/addInfo"/>
+
+    <Button
+        android:id="@+id/addInfo"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/mainBackground"
+        android:text="Add additional fabric information."
+        android:textColor="@color/colorWhite"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/upload" />
     <Button
         android:id="@+id/upload"
         android:text="Save New Item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!--</ScrollView>-->
 
 </android.support.constraint.ConstraintLayout>
