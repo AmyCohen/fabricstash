@@ -89,4 +89,10 @@ public class FabricListFragment  extends Fragment implements ValueEventListener 
         Intent intent = new Intent(getActivity(), CreateNewItemActivity.class);
         startActivity(intent);
     }
+
+    @OnClick(R.id.goToHome)
+    public void returnHome() {
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+    }
 }
