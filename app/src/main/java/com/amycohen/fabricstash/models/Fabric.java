@@ -1,7 +1,5 @@
 package com.amycohen.fabricstash.models;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 
 public class Fabric {
@@ -64,9 +62,6 @@ public class Fabric {
     }
 
     public static Fabric fromSnapshot(DataSnapshot snapshot) {
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//
-//        String uid = user.getUid();
 
         Fabric fabric = new Fabric();
         fabric.id = snapshot.getKey();

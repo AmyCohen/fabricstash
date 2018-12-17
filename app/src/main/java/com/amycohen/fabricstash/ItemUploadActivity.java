@@ -12,7 +12,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -37,7 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PhotoUploadActivity extends AppCompatActivity {
+public class ItemUploadActivity extends AppCompatActivity {
 
     @BindView(R.id.imagePreview) ImageView mImagePreview;
     @BindView(R.id.nameOfFabric) EditText mNameOfFabric;
@@ -117,7 +116,7 @@ public class PhotoUploadActivity extends AppCompatActivity {
                         String photoLink = uri.toString();
                         //https://stackoverflow.com/questions/50585334/tasksnapshot-getdownloadurl-method-not-working
                         //Had to move this call up here and change the parameter type of the saveImageUrlToDatabase to String
-                        PhotoUploadActivity.this.saveImageUrlToDatabase(photoLink);
+                        ItemUploadActivity.this.saveImageUrlToDatabase(photoLink);
                     }
                 });
             }

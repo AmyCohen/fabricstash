@@ -21,7 +21,7 @@
         <activity android:name=".SingleFragmentActivity" />
         <activity android:name=".FabricListFragment" />
         <activity android:name=".FabricListAdapter" />
-        <activity android:name=".PhotoUploadActivity" />
+        <activity android:name=".ItemUploadActivity" />
         <activity android:name=".CreateNewItemActivity" />
 
         <provider
